@@ -16,6 +16,8 @@ stages:
 
         - task: PublishBuildArtifacts@1
           displayName: 'Publish Artifact: drop'
+          inputs:
+            artifactName: drop
 
   - stage: Release
     dependsOn: CI
@@ -26,6 +28,7 @@ stages:
         - task: DownloadBuildArtifacts@0
           displayName: Download Build Artifacts
           inputs:
+            artifactName: drop
             downloadPath: '$(System.DefaultWorkingDirectory)/$(Build.BuildId)'
 
         - task: ExtractFiles@1
