@@ -1,0 +1,42 @@
+trigger:
+  - master
+
+pool:
+  name: Azure Pipelines
+
+stages:
+  - stage: CI
+    jobs:
+    - job: Build
+      steps:
+        - task: ArchiveFiles@2
+          displayName: 'Archive $(Build.SourcesDirectory)/src'
+          inputs:
+            rootFolderOrFile: '$(Build.SourcesDirectory)/src'
+
+        - task: PublishBuildArtifacts@1
+          displayName: 'Publish Artifact: drop'
+
+  - stage: Release
+    dependsOn: CI
+    condition: succeeded('CI')
+    jobs:
+    - job: Deploy
+      steps:
+        - task: DownloadPipelineArtifact@2
+          displayName: Restore Pipeline Artifacts
+
+        - task: ExtractFiles@1
+          displayName: 'Extract files '
+          inputs:
+            archiveFilePatterns: '**/$(Build.BuildId).zip'
+            destinationFolder: '$(System.DefaultWorkingDirectory)/$(Build.BuildId)'
+
+        - task: AzureFileCopy@3
+          displayName: 'AzureBlob File Copy'
+          inputs:
+            SourcePath: '$(System.DefaultWorkingDirectory)/$(Build.BuildId)/src'
+            azureSubscription: 'Visual Studio Enterprise with MSDN (1206edb0-4079-481e-93d8-76f9faf62656)'
+            Destination: AzureBlob
+            storage: cookbooktest
+            ContainerName: '$web'
