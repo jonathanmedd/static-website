@@ -36,6 +36,7 @@ stages:
           inputs:
             archiveFilePatterns: '**/$(Build.BuildId).zip'
             destinationFolder: '$(System.DefaultWorkingDirectory)/$(Build.BuildId)'
+            cleanDestinationFolder: false
 
         - task: AzureFileCopy@3
           displayName: 'AzureBlob File Copy'
