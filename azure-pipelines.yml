@@ -41,7 +41,7 @@ stages:
           displayName: 'AzureBlob File Copy'
           inputs:
             SourcePath: '$(System.DefaultWorkingDirectory)/$(Build.BuildId)/src'
-            azureSubscription: 'Visual Studio Enterprise with MSDN (1206edb0-4079-481e-93d8-76f9faf62656)'
+            azureSubscription: '$(subscription)'
             Destination: AzureBlob
             storage: cookbooktest
             ContainerName: '$web'
