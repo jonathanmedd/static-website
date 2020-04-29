@@ -42,7 +42,7 @@ stages:
           displayName: 'AzureBlob File Copy'
           inputs:
             SourcePath: '$(System.DefaultWorkingDirectory)/$(Build.BuildId)/src'
-            azureSubscription: '$(subscription)'
+            azureSubscription: 'azureSubscription1'
             Destination: AzureBlob
             storage: cookbooktest
             ContainerName: '$web'
